@@ -1,0 +1,3 @@
+rootProject.name = 'insta_stories_ui'
+
+include ':app'
