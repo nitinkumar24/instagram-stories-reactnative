@@ -69,14 +69,18 @@ const useNativeDriver = true;
 //   }
 // }
 class CubeTransition extends React.Component {
+  componentWillMount(){
+    console.log("hello "+this.refs);
+  }
   state = {
     scrollX: new Animated.Value(0)
   };
 
   render() {
+   
     return (
       <Animated.ScrollView
-        ref={view => { this._scrollView = view;} }
+        ref="scroller"
         horizontal
         alwaysBounceHorizontal={false}
         showsHorizontalScrollIndicator={false}
@@ -88,9 +92,10 @@ class CubeTransition extends React.Component {
           { useNativeDriver }
         )}>
           <Animated.View style={[
-            {position: 'absolute', top: 0, left: 0, width, height},
+            { top: 0, left: 0, width, height},
             {transform: [{translateX: this.state.scrollX}]}
           ]}>
+          <Text>hello</Text>
             {this.props.children.map(this._renderChild)}
           </Animated.View>
           {this.props.children.map(this._renderPlaceholders)}
@@ -164,7 +169,7 @@ class CubeTransition extends React.Component {
 
   _renderPlaceholders = (child, i) => {
     return (
-      <View key={`placeholder-${i}`} style={{width, height}} />
+      <View key={`placeholder-${i}`} style={{width , height}} />
     );
   };
 }
