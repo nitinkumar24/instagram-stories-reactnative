@@ -9,18 +9,17 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  Image
 } from 'react-native';
-import Bubble from './Bubble'
+import Thumbnail from './Thumbnail'
 
 
 export default class Index extends Component {
   render() {
     return (
       <View style={styles.container}>
-        
-        <Bubble/>
-       
+        <Thumbnail/>
       </View>
     );
   }
