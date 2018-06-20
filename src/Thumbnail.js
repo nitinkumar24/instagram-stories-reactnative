@@ -25,6 +25,8 @@ console.log(thumbs);
 class Thumbnail extends Component {
   render() {
     const isStart  = this.props.stories.isStart
+    console.log(this.props.stories);
+    
 
     return (
       <View style={styles.container}>
@@ -49,7 +51,6 @@ class Thumbnail extends Component {
 const styles = StyleSheet.create({
   container:{
     flex: 1,
-
   },
   stories: {
     flex: 1,
@@ -64,12 +65,17 @@ const styles = StyleSheet.create({
   },
   closed: {
 		width: 0,
-		height: 0,
+    height: 0,
+    overflow: 'hidden',
+		position: 'absolute',
 	},
 	open: {
-		width, height,
+    width,
+    height,
 		top: 0,
-		left: 0,
+    left: 0,
+    overflow: 'hidden',
+		position: 'absolute',
 	},
 }
 )

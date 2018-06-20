@@ -3,7 +3,6 @@ import data from './data';
 import { Text, View, StyleSheet,Image ,TouchableWithoutFeedback, ScrollView, Dimensions, Animated, PanResponder} from 'react-native'
 
 const { width, height } = Dimensions.get('window');
-
 function fetchStoriesFromAPI(data) {
     
     return (dispatch) => {
@@ -32,10 +31,13 @@ function setStartStoryAndItem(startStoryId,stories){
     console.log(startStory.items[0]);
     scrollX = startStory.idx*width
     const startItem = startStory.items[0];
+    horizontalSwipe = new Animated.Value((0))
+
     return{
         type: "SET_START_STORY_AND_ITEM",
         startStory,stories,startItem,
-        scrollX
+        scrollX,
+        horizontalSwipe
     }
 }
 

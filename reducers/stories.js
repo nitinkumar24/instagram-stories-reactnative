@@ -1,6 +1,7 @@
 // import {FETCHING_STORIES, FETCHING_STORIES_SUCCESS, FETCHING_STORIES_FAILURE} from '../constants'
 import { Text, View, StyleSheet,Image ,TouchableWithoutFeedback, ScrollView, Dimensions, Animated, PanResponder} from 'react-native'
 
+const { width, height } = Dimensions.get('window');
 
 const initialState = {
     stories: [],
@@ -9,7 +10,7 @@ const initialState = {
     isStart: false,
     startStory: null,
     startItem: null,
-    scrollX: new Animated.Value(0)
+    horizontalSwipe: new Animated.Value(0)
 }
 
 export default function modeReducer(state = initialState, action){
@@ -40,7 +41,7 @@ export default function modeReducer(state = initialState, action){
                 stories: action.stories,
                 isStart: true,
                 startItem: action.startItem,
-                scrollX: new Animated.Value(action.scrollX)
+                horizontalSwipe: action.horizontalSwipe
                 
             }
         case "ON_NEXT_ITEM":
