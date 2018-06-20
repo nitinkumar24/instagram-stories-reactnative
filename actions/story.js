@@ -122,18 +122,11 @@ export function onNextStory(currentStory,stories){
         currentItem = currentStory.items[0]
     console.log("in if");
     }
-    // else{
-    //     console.log("in ");
-        
-    //     currentStory = stories[currentStory.idx+1]
-    //     console.log(currentStory);
-        
-    //     currentItem = currentStory.items[0]
-    //     console.log(currentItem);
-        
-    //     console.log("else");
-        
-    // }
+    else{
+        return leaveStory();
+    }
+    console.log("cll");
+    
     indicatorAnim = new Animated.Value(0);
     horizontalSwipe =  new Animated.Value(currentStory.idx* width)
 
@@ -145,4 +138,15 @@ export function onNextStory(currentStory,stories){
         indicatorAnim,
         horizontalSwipe
     }
+}
+
+function leaveStory(){
+    console.log("lea");
+    
+    isStart = false
+    return{
+        type: "leaveStory",
+        isStart
+    }
+
 }

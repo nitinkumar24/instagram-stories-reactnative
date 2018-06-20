@@ -66,6 +66,11 @@ export default function modeReducer(state = initialState, action){
                 map: action.map,
                 indicatorAnim: action.indicatorAnim
             }
+        case "leaveStory":
+            return{
+                ...state,
+                isStart: action.isStart
+            }
         default:
             return state        
         }
