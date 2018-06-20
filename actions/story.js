@@ -151,7 +151,7 @@ export function onNextItem(currentStory,currentItem,stories,horizontalSwipe,prev
 
 export function onNextStory(currentStory,stories,horizontalSwipe , isHorizontalSwiped){
     
-    if(currentStory < stories.length-1){
+    if(currentStory < stories.length){
         currentStory = stories[currentStory]
         currentItem = currentStory.items[0]
     }

@@ -10,6 +10,8 @@ import {onNextStory} from '.././actions/story.js'
 const { width, height } = Dimensions.get('window');
 const useNativeDriver = true;
 const HORIZONTAL_THRESHOLD = 60;
+var isSwiped = false
+var isPaused = false
 
 class Stories extends Component {
   
@@ -22,6 +24,7 @@ class Stories extends Component {
       },
       onMoveShouldSetPanResponderCapture: (evt, { dx, dy, moveX }) => {
         if(dx > HORIZONTAL_THRESHOLD ){
+          isSwiped = true
           Animated.timing(                 
             this.props.stories.horizontalSwipe,            
             {
@@ -36,6 +39,7 @@ class Stories extends Component {
         console.log(dx);
         
         if(dx < -HORIZONTAL_THRESHOLD){
+          isSwiped = true
           Animated.timing(                 
             this.props.stories.horizontalSwipe,            
             {
@@ -50,18 +54,33 @@ class Stories extends Component {
         }
         return false;
       },
+
       onPanResponderGrant: () => {
+        startTouch = Date.now()
+        
+        if(!isSwiped){
+          this.props.stories.indicatorAnim.stopAnimation();
+          isPaused = true
+        }
    
-			},
+      }, 
+      
       onPanResponderRelease:(evt,{x0,dx, dy, moveX }) => {
-        console.log("x- "+x0);
-        if(x0 > width/2){
-        this.props.onNextItem(this.props.stories.startStory,this.props.stories.startItem,this.props.stories.stories,this.props.stories.horizontalSwipe,false);
-        }
-        else{
-          this.props.onNextItem(this.props.stories.startStory,this.props.stories.startItem,this.props.stories.stories,this.props.stories.horizontalSwipe,true);
-          console.log("in previous");          
-        }
+        endTouch = Date.now()
+        if(isPaused && endTouch - startTouch >1000){
+          this.animateIndicator();
+          isPaused = false
+        }else{
+        if(!isSwiped){          
+          if(x0 > width/2){
+          this.props.onNextItem(this.props.stories.startStory,this.props.stories.startItem,this.props.stories.stories,this.props.stories.horizontalSwipe,false);
+          }
+          else{
+            this.props.onNextItem(this.props.stories.startStory,this.props.stories.startItem,this.props.stories.stories,this.props.stories.horizontalSwipe,true);        
+          }
+      }
+    }
+      isSwiped = false
 
 
       }
