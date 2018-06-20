@@ -28,11 +28,11 @@ class Stories extends Component {
         console.log(dx);
 
         if(Math.abs(dx) > 10 ){
-          Animated.timing(                  // Animate over time
+          Animated.spring(                  // Animate over time
             this.state.horizontalSwipe,            // The animated value to drive
             {
-              toValue: (width),                   // Animate to opacity: 1 (opaque)
-              duration: 10,              // Make it take a while
+              toValue: (2*width),                   // Animate to opacity: 1 (opaque)
+              friction: 9,              // Make it take a while
             }
           ).start();    
           console.log(this.state.horizontalSwipe);
@@ -65,17 +65,17 @@ class Stories extends Component {
       
     return (
       <View style={styles.container}   >
-      {stories.map((story, idx) => {
+      {stories.map((story, i) => {
 					return (
 						<Animated.View
             {...this.panResponder.panHandlers }
-							key={idx}
+							key={i}
 							style={[ {
 								transform: [
 									{
 										translateX: this.state.horizontalSwipe.interpolate({
-                      inputRange: [(width*idx) - width, (width*idx), (width*idx) + width],
-                      outputRange: [width / 2, 0, -width /2],
+											inputRange: [ -width,0, width*i,width*(i+1) ],
+											outputRange: [ width,0, -(width*i),-(width*(i+1))],
                       extrapolate: 'clamp',
                     })
                   },
