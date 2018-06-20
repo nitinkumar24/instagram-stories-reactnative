@@ -12,6 +12,10 @@ const HORIZONTAL_THRESHOLD = 60;
 class Stories extends Component {
   
   componentWillMount(){
+
+
+
+    
     
     this.panResponder  = PanResponder.create({
       onStartShouldSetPanResponder:(evt,gestureState) => true,
@@ -47,7 +51,7 @@ class Stories extends Component {
             }
           ).start();        
           
-          this.props.onNextStory((this.props.stories.startStory.idx-1),this.props.stories.stories)
+          this.props.onNextStory((this.props.stories.startStory.idx-1),this.props.stories.stories,this.props.stories.horizontalSwipe, true)
           return true;
         }
         console.log(dx);
@@ -61,7 +65,7 @@ class Stories extends Component {
             }
           ).start();        
           
-          this.props.onNextStory((this.props.stories.startStory.idx)+1,this.props.stories.stories)
+          this.props.onNextStory((this.props.stories.startStory.idx)+1,this.props.stories.stories,this.props.stories.horizontalSwipe, true)
           return true;
 
         }
@@ -80,6 +84,18 @@ class Stories extends Component {
       const startItem = this.props.stories.startItem
       console.log(this.props);
       console.log("hello");
+      // if(this.props.stories.animate){
+      //   Animated.timing(                 
+      //     this.props.stories.horizontalSwipe,            
+      //     {
+      //       toValue: (width),                   
+      //       duration: 1000,            
+      //     }
+      //   ).start();        
+        
+      //   return true;
+        
+      // }
       console.log(this.props.stories.map);
 
       style = {
@@ -146,7 +162,7 @@ class Stories extends Component {
 				toValue: 1,
 				duration: 5000 * (1-this.props.stories.indicatorAnim._value),
 			}).start(({ finished }) => {
-				if (finished) this.props.onNextItem(this.props.stories.startStory,this.props.stories.startItem,this.props.stories.stories);
+				if (finished) this.props.onNextItem(this.props.stories.startStory,this.props.stories.startItem,this.props.stories.stories,this.props.stories.horizontalSwipe);
 			});
 		});    
   }

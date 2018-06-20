@@ -82,11 +82,8 @@ function getStoriesFailure(){
 }
 
 
-export function onNextItem(currentStory,currentItem,stories){
-    console.log(stories);
-    console.log(currentStory);
-    
-    console.log(currentItem);
+export function onNextItem(currentStory,currentItem,stories,horizontalSwipe){
+  
     if(currentItem.id<currentStory.items.length-1){
     currentItem = currentStory.items[currentItem.id+1]
     console.log("in if");
@@ -101,21 +98,11 @@ export function onNextItem(currentStory,currentItem,stories){
     }
     }
     else{
-        return onNextStory(currentStory.idx+1,stories)
-        // console.log("in ");
-        
-        // currentStory = stories[currentStory.idx+1]
-        // console.log(currentStory);
-        
-        // currentItem = currentStory.items[0]
-        // console.log(currentItem);
-        
-        // console.log("else");
-        
+        return onNextStory(currentStory.idx+1,stories,horizontalSwipe,false)      
     }
 }
 
-export function onNextStory(currentStory,stories){
+export function onNextStory(currentStory,stories,horizontalSwipe , isHorizontalSwiped){
     
     if(currentStory < stories.length-1){
         currentStory = stories[currentStory]
@@ -128,15 +115,24 @@ export function onNextStory(currentStory,stories){
     console.log("cll");
     
     indicatorAnim = new Animated.Value(0);
-    horizontalSwipe =  new Animated.Value(currentStory.idx* width)
-
+    if(!isHorizontalSwiped){
+        Animated.timing(                 
+            horizontalSwipe,            
+            {
+              toValue: (((currentStory.idx))*width),                   
+              duration: 1000,            
+            }
+          ).start();   
+    }
+   
+    animate = true
     return{
         type: "onNextStory",
         currentStory,
         stories,
         currentItem,
         indicatorAnim,
-        horizontalSwipe
+        animate
     }
 }
 
