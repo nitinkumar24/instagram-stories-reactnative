@@ -10,7 +10,8 @@ const initialState = {
     isStart: false,
     startStory: null,
     startItem: null,
-    horizontalSwipe: new Animated.Value(0)
+    horizontalSwipe: new Animated.Value(0),
+    indicatorAnim: new Animated.Value(0)
 }
 
 export default function modeReducer(state = initialState, action){
@@ -48,7 +49,8 @@ export default function modeReducer(state = initialState, action){
             return{
                 ...state,
                 startStory: action.currentStory,
-                stories:action.stories
+                stories:action.stories,
+                startItem:action.currentItem
             }
         case "ON_NEXT_ITEM":
             return{

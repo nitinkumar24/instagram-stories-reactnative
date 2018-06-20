@@ -76,15 +76,15 @@ export function onNextItem(currentStory,currentItem,stories){
     console.log("in if");
     }
     else{
-        console.log("in ");
+        // console.log("in ");
         
-        currentStory = stories[currentStory.idx+1]
-        console.log(currentStory);
+        // currentStory = stories[currentStory.idx+1]
+        // console.log(currentStory);
         
-        currentItem = currentStory.items[0]
-        console.log(currentItem);
+        // currentItem = currentStory.items[0]
+        // console.log(currentItem);
         
-        console.log("else");
+        // console.log("else");
         
     }
 
@@ -99,6 +99,7 @@ export function onNextStory(currentStory,stories){
     
     if(currentStory < stories.length-1){
         currentStory = stories[currentStory]
+        currentItem = currentStory.items[0]
     console.log("in if");
     }
     // else{
@@ -117,6 +118,7 @@ export function onNextStory(currentStory,stories){
     return{
         type: "onNextStory",
         currentStory,
-        stories
+        stories,
+        currentItem
     }
 }

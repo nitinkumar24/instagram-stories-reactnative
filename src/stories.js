@@ -82,38 +82,72 @@ class Stories extends Component {
       console.log(this.props);
       console.log("hello");
       console.log(startStory);
+
+      style = {
+				width: this.props.stories.indicatorAnim.interpolate({
+					inputRange: [0, 1],
+					outputRange: [0,width],
+					extrapolate: 'clamp'
+				}),backgroundColor:'red'
+			};
       
     return (
       <View style={styles.container}>
       {stories.map((story, i) => {
 					return (
+         
 						<Animated.View
-            {...this.panResponder.panHandlers }
-							key={i}
-							style={[ {
-								transform: [
-									{
-										translateX: this.props.stories.horizontalSwipe.interpolate({
-											inputRange: [ -width,0, width*i,width*(i+1) ],
-											outputRange: [ width,0, -(width*i),-(width*(i+1))],
-                      extrapolate: 'clamp',
-                    })
-                  },
-              	]
-							}]
-						}>
-						<Image
-            {...this.panResponder.panHandlers }
-						source={{ uri: story.items[0].src }}
-                        style={styles.image}
-                        key = {story.idx}
-					/>
+                {...this.panResponder.panHandlers }
+                  key={i}
+                  style={[ {
+                    transform: [
+                      {
+                        translateX: this.props.stories.horizontalSwipe.interpolate({
+                          inputRange: [ -width,0, width*i,width*(i+1) ],
+                          outputRange: [ width,0, -(width*i),-(width*(i+1))],
+                          extrapolate: 'clamp',
+                        })
+                      },
+                    ]
+                  }]
+                }>
+                <Image
+                {...this.panResponder.panHandlers }
+                source={{ uri: story.items[0].src }}
+                            style={styles.image}
+                            key = {story.idx}
+                />
+                <View style={styles.indicatorWrap}>
+                  <View style={styles.indicators}>
+                    {story.items.map((item, i) => (                    
+                      <View style={styles.line} >
+                        <Animated.View style={[styles.progress,i === 1  ? style : null ] }  />
+                      </View>
+                    ))}
+                  </View>
+                  {this.props.stories.isStart? this.animateIndicator() : null}
+                </View>
+         
 						</Animated.View>
+            
+            
 					);
 				})}     
       </View>
     )
   }
+
+  animateIndicator(){
+    requestAnimationFrame(() => {
+			Animated.timing(this.props.stories.indicatorAnim, {
+				toValue: 1,
+				duration: 5000 * (1-this.props.stories.indicatorAnim._value),
+			}).start(({ finished }) => {
+				// if (finished) this.props.onNextItem(this.props.stories.startStory,this.props.stories.startItem,this.props.stories.stories);
+			});
+		});    
+  }
+
 }
 
 
@@ -129,7 +163,27 @@ const styles = StyleSheet.create({
     image:{
       width: width, height:height,
         backgroundColor: 'pink',     
-    }
+    },
+    indicatorWrap: {
+      position: 'absolute',
+      top: 0, left: 0, right: 0,
+    },
+    indicators: {
+      height: 30,
+      alignItems: 'center',
+      paddingHorizontal: 10,
+      flexDirection: 'row',
+    },
+    line: {
+      flex: 1,
+      backgroundColor: 'rgba(255,255,255,0.4)',
+      marginHorizontal: 2,
+      height: 2,
+    },
+    progress: {
+      backgroundColor: 'rgba(255,255,255,0.4)',
+      height: 2,
+    },
 })
 
 function mapStateToProps(state){  
@@ -161,7 +215,7 @@ export default connect(mapStateToProps,{onNextItem,onNextStory})(Stories)
 //       inputRange: [
 //         (width*idx) - width,
 //         (width*idx) - width + 0.1,
-//         (width*idx),
+//        (width*idx),
 //         (width*idx) + width - 0.1,
 //         (width*idx) + width,
 //       ],
