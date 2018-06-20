@@ -82,13 +82,33 @@ function getStoriesFailure(){
 }
 
 
-export function onNextItem(currentStory,currentItem,stories,horizontalSwipe){
-  
-    if(currentItem.id<currentStory.items.length-1){
-    currentItem = currentStory.items[currentItem.id+1]
-    console.log("in if");
-    map.set(currentStory.idx,currentItem.id)
+export function onNextItem(currentStory,currentItem,stories,horizontalSwipe,previous){
+
+    if(previous){
+        if(currentItem.id == 0 ){   
+            if( currentStory.idx == 0 ){
+                return leaveStory();
+            }
+            return onNextStory(currentStory.idx-1,stories,horizontalSwipe,false)      
+        }
+
+        currentItem = currentStory.items[currentItem.id-1]
+        map.set(currentStory.idx,currentItem.id)
+
+
+    }
+    if(!previous){
+        if(currentItem.id<currentStory.items.length-1){
+            currentItem = currentStory.items[currentItem.id+1]
+            console.log("in if");
+            map.set(currentStory.idx,currentItem.id)
+            
+        }else{
+            return onNextStory(currentStory.idx+1,stories,horizontalSwipe,false)      
+        }
+    }
     indicatorAnim = new Animated.Value(0);
+
     return{
         type: "ON_NEXT_ITEM",
         currentStory,
@@ -96,23 +116,48 @@ export function onNextItem(currentStory,currentItem,stories,horizontalSwipe){
         indicatorAnim,
         map
     }
-    }
-    else{
-        return onNextStory(currentStory.idx+1,stories,horizontalSwipe,false)      
-    }
 }
+
+// export function onPreviousItem(currentStory,currentItem,stories,horizontalSwipe){
+
+//     if(currentItem.id == 0){
+//         return onNextStory(currentStory.idx-1,stories,horizontalSwipe,false)    //go to previous story
+//     }
+
+    
+//     console.log(currentStory);
+//     console.log(currentItem);
+    
+    
+//     currentItem = currentStory.items[currentItem.id-1]
+//     console.log(currentItem.id);
+
+//     map.set(currentStory.idx,0)
+//     console.log(map.get(currentStory.idx));
+    
+
+
+//     indicatorAnim = new Animated.Value(0);
+//     return{
+//         type: "onPreviousItem",
+//         currentStory,
+//         currentItem,
+//         indicatorAnim,
+//         map
+//     }
+
+// }
+   
 
 export function onNextStory(currentStory,stories,horizontalSwipe , isHorizontalSwiped){
     
     if(currentStory < stories.length-1){
         currentStory = stories[currentStory]
         currentItem = currentStory.items[0]
-    console.log("in if");
     }
     else{
         return leaveStory();
     }
-    console.log("cll");
     
     indicatorAnim = new Animated.Value(0);
     if(!isHorizontalSwiped){

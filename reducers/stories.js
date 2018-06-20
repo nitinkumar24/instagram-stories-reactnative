@@ -67,6 +67,15 @@ export default function modeReducer(state = initialState, action){
                 map: action.map,
                 indicatorAnim: action.indicatorAnim
             }
+            case "ON_PREVIOUS_ITEM":
+            return{
+                ...state,
+                startStory: action.currentStory,
+                isStart: true,
+                startItem: action.currentItem,
+                map: action.map,
+                indicatorAnim: action.indicatorAnim
+            }
         case "leaveStory":
             return{
                 ...state,
