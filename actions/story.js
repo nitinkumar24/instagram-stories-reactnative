@@ -31,7 +31,7 @@ function setStartStoryAndItem(startStoryId,stories){
     console.log(startStory.items[0]);
     scrollX = startStory.idx*width
     const startItem = startStory.items[0];
-    horizontalSwipe = new Animated.Value((0))
+    horizontalSwipe = new Animated.Value((startStory.idx*width))
 
     return{
         type: "SET_START_STORY_AND_ITEM",
