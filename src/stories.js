@@ -49,6 +49,7 @@ class Stories extends Component {
           ).start();        
           
           this.props.onNextStory((this.props.stories.startStory.idx-1),this.props.stories.stories)
+          this.props.stories.indicatorAnim.setValue(0);
           return true;
         }
         console.log(dx);
@@ -81,7 +82,7 @@ class Stories extends Component {
       const startItem = this.props.stories.startItem
       console.log(this.props);
       console.log("hello");
-      console.log(startStory);
+      console.log(this.props.stories.map);
 
       style = {
 				width: this.props.stories.indicatorAnim.interpolate({
@@ -113,15 +114,15 @@ class Stories extends Component {
                 }>
                 <Image
                 {...this.panResponder.panHandlers }
-                source={{ uri: story.items[0].src }}
+                source={{ uri: stories[story.idx].items[this.props.stories.map.get(story.idx)].src }}
                             style={styles.image}
                             key = {story.idx}
                 />
                 <View style={styles.indicatorWrap}>
                   <View style={styles.indicators}>
                     {story.items.map((item, i) => (                    
-                      <View style={styles.line} >
-                        <Animated.View style={[styles.progress,i === 1  ? style : null ] }  />
+                      <View style={styles.line} key={i}>
+                        <Animated.View style={[styles.progress,i === 0 && story.idx === this.props.stories.startStory.idx? style : null ] }  />
                       </View>
                     ))}
                   </View>

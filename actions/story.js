@@ -3,6 +3,21 @@ import data from './data';
 import { Text, View, StyleSheet,Image ,TouchableWithoutFeedback, ScrollView, Dimensions, Animated, PanResponder} from 'react-native'
 
 const { width, height } = Dimensions.get('window');
+console.log("hiana");
+
+var map = new Map();
+
+
+for(i=0;i<data.length;i++){
+    map.set(data[i].idx, 0)
+}
+
+console.log(map);
+
+
+
+
+
 function fetchStoriesFromAPI(data) {
     
     return (dispatch) => {
@@ -37,7 +52,8 @@ function setStartStoryAndItem(startStoryId,stories){
         type: "SET_START_STORY_AND_ITEM",
         startStory,stories,startItem,
         scrollX,
-        horizontalSwipe
+        horizontalSwipe,
+        map
     }
 }
 
@@ -87,11 +103,13 @@ export function onNextItem(currentStory,currentItem,stories){
         // console.log("else");
         
     }
+    indicatorAnim = new Animated.Value(0);
 
     return{
         type: "ON_NEXT_ITEM",
         currentStory,
-        currentItem
+        currentItem,
+        indicatorAnim
     }
 }
 
@@ -114,11 +132,13 @@ export function onNextStory(currentStory,stories){
     //     console.log("else");
         
     // }
+    indicatorAnim = new Animated.Value(0);
 
     return{
         type: "onNextStory",
         currentStory,
         stories,
-        currentItem
+        currentItem,
+        indicatorAnim
     }
 }
