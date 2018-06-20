@@ -94,3 +94,29 @@ export function onNextItem(currentStory,currentItem,stories){
         currentItem
     }
 }
+
+export function onNextStory(currentStory,stories){
+    
+    if(currentStory < stories.length-1){
+        currentStory = stories[currentStory]
+    console.log("in if");
+    }
+    // else{
+    //     console.log("in ");
+        
+    //     currentStory = stories[currentStory.idx+1]
+    //     console.log(currentStory);
+        
+    //     currentItem = currentStory.items[0]
+    //     console.log(currentItem);
+        
+    //     console.log("else");
+        
+    // }
+
+    return{
+        type: "onNextStory",
+        currentStory,
+        stories
+    }
+}

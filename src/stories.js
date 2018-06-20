@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import { Text, View, StyleSheet,Image ,TouchableWithoutFeedback, ScrollView, Dimensions, Animated, PanResponder} from 'react-native'
 import {connect} from 'react-redux'
 import {onNextItem} from '.././actions/story.js'
+import {onNextStory} from '.././actions/story.js'
+
 import Story from './story';
 
 const { width, height } = Dimensions.get('window');
 const useNativeDriver = true;
+const HORIZONTAL_THRESHOLD = 60;
 
 class Stories extends Component {
-
   
   componentWillMount(){
     
@@ -19,22 +21,51 @@ class Stories extends Component {
       },
       onMoveShouldSetPanResponderCapture: (evt, { dx, dy, moveX }) => {
 
-        if(Math.abs(dx) > 10 ){
-          Animated.spring(                 
-            this.props.stories.horizontalSwipe,            
-            {
-              toValue: (width),                   
-              friction: 9,            
-            }
-          ).start();        
-          return true;
-        }
-        return false;
+        // if(Math.abs(dx) > 10 ){
+        //   Animated.timing(                 
+        //     this.props.stories.horizontalSwipe,            
+        //     {
+        //       toValue: (((this.props.stories.startStory.idx)+1)*width),                   
+        //       duration: 500,            
+        //     }
+        //   ).start();        
+          
+        //   this.props.onNextStory((this.props.stories.startStory),this.props.stories.stories)
+        //   return true;
+        // }
+        // return false;
       },
       onPanResponderGrant: () => {
    
 			},
-      onPanResponderRelease:(evt,{moveX}) => {
+      onPanResponderRelease:(evt,{dx, dy, moveX }) => {
+        if(dx > HORIZONTAL_THRESHOLD ){
+          Animated.timing(                 
+            this.props.stories.horizontalSwipe,            
+            {
+              toValue: (((this.props.stories.startStory.idx)-1)*width),                   
+              duration: 500,            
+            }
+          ).start();        
+          
+          this.props.onNextStory((this.props.stories.startStory.idx-1),this.props.stories.stories)
+          return true;
+        }
+        console.log(dx);
+        
+        if(dx < -HORIZONTAL_THRESHOLD){
+          Animated.timing(                 
+            this.props.stories.horizontalSwipe,            
+            {
+              toValue: (((this.props.stories.startStory.idx)+1)*width),                   
+              duration: 500,            
+            }
+          ).start();        
+          
+          this.props.onNextStory((this.props.stories.startStory.idx)+1,this.props.stories.stories)
+          return true;
+
+        }
         return false;
       }
     })
@@ -48,7 +79,7 @@ class Stories extends Component {
         console.log(typeof(startStory));
       }
       const startItem = this.props.stories.startItem
-      console.log(startStory);
+      console.log(this.props);
       console.log("hello");
       console.log(startStory);
       
@@ -107,7 +138,7 @@ function mapStateToProps(state){
     }
   
   }
-export default connect(mapStateToProps,{onNextItem})(Stories)
+export default connect(mapStateToProps,{onNextItem,onNextStory})(Stories)
 
 //   _getTransformsFor = (i) => {
 //     let { scrollX } = this.state;

@@ -44,6 +44,12 @@ export default function modeReducer(state = initialState, action){
                 horizontalSwipe: action.horizontalSwipe
                 
             }
+        case "onNextStory":
+            return{
+                ...state,
+                startStory: action.currentStory,
+                stories:action.stories
+            }
         case "ON_NEXT_ITEM":
             return{
                 ...state,
