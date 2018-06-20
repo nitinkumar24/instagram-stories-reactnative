@@ -4,7 +4,6 @@ import {connect} from 'react-redux'
 import {onNextItem} from '.././actions/story.js'
 import {onNextStory} from '.././actions/story.js'
 
-import Story from './story';
 
 const { width, height } = Dimensions.get('window');
 const useNativeDriver = true;
@@ -44,12 +43,11 @@ class Stories extends Component {
             this.props.stories.horizontalSwipe,            
             {
               toValue: (((this.props.stories.startStory.idx)-1)*width),                   
-              duration: 500,            
+              duration: 1000,            
             }
           ).start();        
           
           this.props.onNextStory((this.props.stories.startStory.idx-1),this.props.stories.stories)
-          this.props.stories.indicatorAnim.setValue(0);
           return true;
         }
         console.log(dx);
@@ -59,7 +57,7 @@ class Stories extends Component {
             this.props.stories.horizontalSwipe,            
             {
               toValue: (((this.props.stories.startStory.idx)+1)*width),                   
-              duration: 500,            
+              duration: 1000,            
             }
           ).start();        
           
@@ -89,7 +87,7 @@ class Stories extends Component {
 					inputRange: [0, 1],
 					outputRange: [0,width],
 					extrapolate: 'clamp'
-				}),backgroundColor:'red'
+				}),backgroundColor:'white'
 			};
       
     return (
@@ -122,7 +120,11 @@ class Stories extends Component {
                   <View style={styles.indicators}>
                     {story.items.map((item, i) => (                    
                       <View style={styles.line} key={i}>
-                        <Animated.View style={[styles.progress,i === 0 && story.idx === this.props.stories.startStory.idx? style : null ] }  />
+                        <Animated.View style={[
+                          styles.progress,
+                          i === this.props.stories.map.get(story.idx) && story.idx === this.props.stories.startStory.idx? style : null ,
+                          i < this.props.stories.map.get(story.idx) ? {backgroundColor: 'white'} : null
+                          ] }  />
                       </View>
                     ))}
                   </View>
@@ -144,7 +146,7 @@ class Stories extends Component {
 				toValue: 1,
 				duration: 5000 * (1-this.props.stories.indicatorAnim._value),
 			}).start(({ finished }) => {
-				// if (finished) this.props.onNextItem(this.props.stories.startStory,this.props.stories.startItem,this.props.stories.stories);
+				if (finished) this.props.onNextItem(this.props.stories.startStory,this.props.stories.startItem,this.props.stories.stories);
 			});
 		});    
   }

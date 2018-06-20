@@ -90,8 +90,18 @@ export function onNextItem(currentStory,currentItem,stories){
     if(currentItem.id<currentStory.items.length-1){
     currentItem = currentStory.items[currentItem.id+1]
     console.log("in if");
+    map.set(currentStory.idx,currentItem.id)
+    indicatorAnim = new Animated.Value(0);
+    return{
+        type: "ON_NEXT_ITEM",
+        currentStory,
+        currentItem,
+        indicatorAnim,
+        map
+    }
     }
     else{
+        return onNextStory(currentStory.idx+1,stories)
         // console.log("in ");
         
         // currentStory = stories[currentStory.idx+1]
@@ -102,14 +112,6 @@ export function onNextItem(currentStory,currentItem,stories){
         
         // console.log("else");
         
-    }
-    indicatorAnim = new Animated.Value(0);
-
-    return{
-        type: "ON_NEXT_ITEM",
-        currentStory,
-        currentItem,
-        indicatorAnim
     }
 }
 
@@ -133,12 +135,14 @@ export function onNextStory(currentStory,stories){
         
     // }
     indicatorAnim = new Animated.Value(0);
+    horizontalSwipe =  new Animated.Value(currentStory.idx* width)
 
     return{
         type: "onNextStory",
         currentStory,
         stories,
         currentItem,
-        indicatorAnim
+        indicatorAnim,
+        horizontalSwipe
     }
 }
