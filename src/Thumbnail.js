@@ -56,11 +56,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignSelf: 'stretch',
+    margin: 12
 
   },
   thumbnail:{
     flexDirection: 'row',
-    height: 100
+    height: 100,
 
   },
   closed: {
